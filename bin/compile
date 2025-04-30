@@ -41,6 +41,8 @@ else
   COMMIT_JSON=$(curl -H "Authorization: token $DEPLOY_NOTIFY_GITHUB_AUTH_TOKEN" https://api.github.com/repos/$DEPLOY_NOTIFY_GITHUB_ORG/$DEPLOY_NOTIFY_GITHUB_PROJECT/commits/$SOURCE_VERSION)
   COMMIT_MESSAGE=$((echo "$COMMIT_JSON" | python3 -c "import sys, json; print(json.load(sys.stdin, strict=False)['commit']['message'])" || echo '') | head -n 1)
   COMMIT_URL=$(echo "$COMMIT_JSON" | python3 -c "import sys, json; print(json.load(sys.stdin, strict=False)['html_url'])" || echo 'Can not reach Github...')
+  COMMIT_SHA=$(echo "$COMMIT_JSON" | python3 -c "import sys, json; print(json.load(sys.stdin, strict=False)['sha'])")
+  SHORT_SHA=${COMMIT_SHA:0:8}
   SLACK_PAYLOAD=$(cat <<EOF
 {
   "blocks": [
@@ -48,7 +50,7 @@ else
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "*MightyCheck* deployed :rocket:\n• ${COMMIT_MESSAGE}\n• ${COMMIT_URL}"
+        "text": "*MightyCheck* deployed :rocket:\n• ${COMMIT_MESSAGE}\n• <${COMMIT_URL}|${SHORT_SHA}>"
       }
     }
   ]
