@@ -50,7 +50,7 @@ else
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "*MightyCheck* deployed :rocket:\n• ${COMMIT_MESSAGE}\n• <${COMMIT_URL}|${SHORT_SHA}>"
+        "text": "*MightyCheck* deployed :rocket:\n• ${COMMIT_MESSAGE}\n• Commit: <${COMMIT_URL}|${SHORT_SHA}>"
       }
     }
   ]
